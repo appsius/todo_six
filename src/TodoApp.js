@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import useTodoState from './hooks/useTodoState';
 import TodoList from './TodoList';
 import TodoForm from './TodoForm';
 import Typography from '@material-ui/core/Typography';
@@ -6,36 +7,12 @@ import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
-import uuid from 'uuid/v4';
 
 export default function TodoApp() {
-  const initialTodos = [
-    { id: 1, task: 'Completed completed', completed: false },
-    { id: 2, task: 'Todo todo todo todo', completed: true },
-    { id: 3, task: 'Finally finally finally', completed: false }
-  ];
-  const [todos, setTodos] = useState(initialTodos);
-  const addTodo = newTodoText => {
-    setTodos([...todos, { id: uuid(), task: newTodoText, completed: false }]);
-  };
-  const removeTodo = todoId => {
-    // filter out removed todo
-    const updatedTodos = todos.filter(todo => todo.id !== todoId);
-    // call setTodos with new todo array
-    setTodos(updatedTodos);
-  };
-  const toggleTodo = todoId => {
-    const updatedTodos = todos.map(todo =>
-      todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
-    );
-    setTodos(updatedTodos);
-  };
-  const editTodo = (todoId, newTask) => {
-    const updatedTodos = todos.map(todo =>
-      todo.id === todoId ? { ...todo, task: newTask } : todo
-    );
-    setTodos(updatedTodos);
-  };
+  const initialTodos = [{ id: 1, task: 'Pot a monkey', completed: false }];
+  const { todos, addTodo, removeTodo, toggleTodo, editTodo } = useTodoState(
+    initialTodos
+  );
 
   return (
     <Paper
